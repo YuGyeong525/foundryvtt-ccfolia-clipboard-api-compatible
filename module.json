@@ -1,0 +1,21 @@
+{
+  "id": "ccfolia-clipboard-api-compatible",
+  "title": "ccfolia clipboard api character importer",
+  "description": "auto create CoC 7th character by paste ccfolia clipboard api data.",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "12"
+  },
+  "scripts": [
+    "main.js"
+  ],
+  "authors": [
+    {
+      "name": "YeonHyang"
+    }
+  ],
+  "systems": [
+    "CoC7"
+  ]
+}
