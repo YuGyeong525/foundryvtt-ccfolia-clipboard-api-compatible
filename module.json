@@ -4,7 +4,7 @@
   "description": "auto create CoC 7th character by paste ccfolia clipboard api data.",
   "version": "1.0.0",
   "compatibility": {
-    "minimum": "11",
+    "minimum": "12",
     "verified": "12"
   },
   "scripts": [
@@ -16,6 +16,6 @@
     }
   ],
   "systems": [
-    "CoC7"
+    "CoC 7th"
   ]
 }

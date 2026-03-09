@@ -1,12 +1,12 @@
 Hooks.on("renderActorDirectory", (app, html, data) => {
   // 액터(캐릭터) 탭 상단에 버튼 추가
-  const importButton = $(`<button class="ccfolia-import-btn" style="margin-bottom: 5px;"><i class="fas fa-file-import"></i> 코코포리아 임포트</button>`);
+  const importButton = $(`<button class="ccfolia-import-btn" style="margin-bottom: 5px;"><i class="fas fa-file-import"></i>코코포리아 api 데이터 임포트</button>`);
   html.find(".directory-header .action-buttons").append(importButton);
 
   importButton.click(ev => {
     new Dialog({
       title: "CoC7 캐릭터 자동 임포터",
-      content: "<p>특성치가 포함된 코코포리아 api 데이터를 붙여넣어주세요.</p><textarea id='ccfolia-data' style='width:100%; height:250px; font-family:monospace;'></textarea>",
+      content: "<p>코코포리아 api 데이터를 붙여넣어주세요.</p><textarea id='ccfolia-data' style='width:100%; height:250px; font-family:monospace;'></textarea>",
       buttons: {
         import: {
           label: "캐릭터 생성!",
@@ -17,13 +17,13 @@ Hooks.on("renderActorDirectory", (app, html, data) => {
             try {
               const parsed = JSON.parse(rawData);
               if (parsed.kind !== "character" || !parsed.data) {
-                return ui.notifications.error("유효한 코코포리아 데이터가 아닙니다.");
+                return ui.notifications.error("유효한 데이터가 아닙니다.");
               }
 
               const data = parsed.data;
               const name = data.name || "이름 없는 탐사자";
-              const memo = data.memo ? data.memo.replace(/\n/g, "<br>") : ""; 
-              
+              const memo = data.memo ? data.memo.replace(/\n/g, "<br>") : "";
+
               // --- 메모에서 정보 추출 ---
               const memoRaw = data.memo || "";
               const getMemoField = (fieldName) => {
@@ -37,11 +37,11 @@ Hooks.on("renderActorDirectory", (app, html, data) => {
               const residence = getMemoField("거주지");
               const birthplace = getMemoField("출생지");
 
-              const getStatus = (label) => data.status?.find(s => s.label === label) || {value: 0, max: 0};
+              const getStatus = (label) => data.status?.find(s => s.label === label) || { value: 0, max: 0 };
               const hp = getStatus("HP");
               const mp = getStatus("MP");
               const san = getStatus("SAN");
-              
+
               const movParam = data.params?.find(p => p.label === "이동력");
               const mov = movParam ? parseInt(movParam.value) : 8;
 
@@ -51,7 +51,7 @@ Hooks.on("renderActorDirectory", (app, html, data) => {
 
               if (data.commands) {
                 const commandLines = data.commands.split("\n");
-                const regex = /CC<=(\d+)\s+(.+)/; 
+                const regex = /CC<=(\d+)\s+(.+)/;
 
                 for (let line of commandLines) {
                   const match = line.match(regex);
@@ -67,7 +67,7 @@ Hooks.on("renderActorDirectory", (app, html, data) => {
                     else if (itemName === "지능") chars.int = value;
                     else if (itemName === "정신력") chars.pow = value;
                     else if (itemName === "교육") chars.edu = value;
-                    else if (itemName === "행운") luckValue = value; 
+                    else if (itemName === "행운") luckValue = value;
                     else skillsList.push({ name: itemName, value: value });
                   }
                 }
@@ -114,8 +114,8 @@ Hooks.on("renderActorDirectory", (app, html, data) => {
                   "법률": "law.svg", "추적": "track.svg", "수영": "swim.svg", "도약": "jump.svg",
                   "오르기": "climb.svg", "변장": "disguise.svg", "감정": "appraise.svg",
                   "승마": "ride.svg", "손놀림": "sleight_of_hand.svg", "재력": "credit_rating.svg",
-                  "자동차운전": "drive_auto.svg", "동물다루기": "animal_handling.svg", 
-                  "독순술": "lip_reading.svg", "잠수": "diving.svg", "최면술": "hypnosis.svg", 
+                  "자동차운전": "drive_auto.svg", "동물다루기": "animal_handling.svg",
+                  "독순술": "lip_reading.svg", "잠수": "diving.svg", "최면술": "hypnosis.svg",
                   "포격": "artillery.svg", "폭파": "demolitions.svg"
                 };
 
@@ -168,8 +168,8 @@ Hooks.on("renderActorDirectory", (app, html, data) => {
                   if (n.includes("투척")) return "systems/CoC7/assets/icons/skills/fighting_throw.svg";
                   return "systems/CoC7/assets/icons/skills/fighting_brawl.svg";
                 }
-                
-                return "icons/svg/item-bag.svg"; 
+
+                return "icons/svg/item-bag.svg";
               };
 
               const skillsToCreate = [];
@@ -180,8 +180,8 @@ Hooks.on("renderActorDirectory", (app, html, data) => {
                 let existingItem = actor.items.find(i => i.name.replace(/\s/g, "") === normalizedName && i.type === "skill");
 
                 if (existingItem) {
-                  skillsToUpdate.push({ 
-                    _id: existingItem.id, 
+                  skillsToUpdate.push({
+                    _id: existingItem.id,
                     "system.value": s.value,
                     "system.base": s.value
                   });
@@ -190,7 +190,7 @@ Hooks.on("renderActorDirectory", (app, html, data) => {
                     name: s.name,
                     type: "skill",
                     img: getIconPath(s.name),
-                    system: { 
+                    system: {
                       value: s.value,
                       base: s.value
                     }
